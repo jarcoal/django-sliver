@@ -4,6 +4,35 @@ from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse
 
 
+class FiltersMixin(object):
+	"""
+	Enable simple filtering of querysets
+	"""
+
+	filters = []
+
+	def get_queryset(self):
+		"""
+		Override get_queryset and apply filters.
+		"""
+		return super(FiltersMixin, self).get_queryset().filter(**self.get_filters())
+
+	def get_filters(self):
+		"""
+		Provides a dictionary of filters to apply to the queryset.
+		"""
+
+		filters = {}
+
+		for key, value in self.request.GET.items():
+			if key not in self.filters:
+				continue
+
+			filters[key] = value
+
+		return filters
+
+
 class URIMixin(object):
 	"""
 	Enable display of URIs in responses

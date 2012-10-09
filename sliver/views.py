@@ -231,8 +231,6 @@ class CollectionResource(MultipleObjectMixin, Resource):
 	Resource for a collection of models
 	"""
 
-	filters = []
-
 	def post(self, request, *args, **kwargs):
 		"""
 		POST requests - add object
@@ -249,7 +247,7 @@ class CollectionResource(MultipleObjectMixin, Resource):
 		GET requests - fetch objects
 		"""
 
-		self.object_list = self.get_queryset().filter(**self.get_filters())
+		self.object_list = self.get_queryset()
 		return self.render_to_response(self.get_context_data())
 
 
@@ -258,20 +256,4 @@ class CollectionResource(MultipleObjectMixin, Resource):
 		Loop through the models in the queryset and dehydrate them.
 		"""
 		return [self.dehydrate(model, self.fields, self.exclude) for model in self.object_list]
-
-
-	def get_filters(self):
-		"""
-		Provides a dictionary of filters to apply to the queryset.
-		"""
-
-		filters = {}
-
-		for key, value in self.request.GET.items():
-			if key not in self.filters:
-				continue
-
-			filters[key] = value
-
-		return filters
 
