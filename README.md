@@ -76,18 +76,33 @@ CollectionResource is designed to handle requests relating to a collection of mo
 
 ----
 
+###Limiting incoming/outgoing fields
+
+Handling which fields are shown / updateable is just like using Django's form views.  Continuing our example:
+
+```python
+class ProductCollectionResource(JSONMixin, CollectionResource):
+	#this will limit the output to these three fields.  it will restrict updates to just them as well.
+	fields = ['id', 'name', 'description']
+
+	#like form views, exclude also works
+	exclude = ['secret_key']
+```
+
+----
+
 ###Serializing / Unserializing
 
 Serializing is really up to you; the bare resources don't implement anything in particular. There is a JSONMixin provided that you can add to your resource that will aide in parsing/rendering your resource in JSON.
 
-When a request comes in, the `parse()` method on your resource will be called with request.body passed to it.  Here is an example for JSON:
+When a request comes in, the `parse()` method on your resource will be called with `request.body` passed to it.  Here is an example for JSON:
 
 ```python
 def parse(self, raw_data):
 	return json.loads(raw_data)
 ```
 
-NOTE: If request.body isn't all you need to parse a request, remember this is just a generic view, the request object is available at `self.request`.
+NOTE: If `request.body` isn't all you need to parse a request, remember this is just a generic view, the request object is available at `self.request`.
 
 When a response is ready to go out, the `render()` method is called on your resource.  Again, a JSON example:
 
@@ -114,3 +129,64 @@ All filters must be specified in the `filters` attribute, otherwise they are ign
 If you need more advanced filtering, you can override `get_filters()` which should return a dictionary of filters that will be applied to the queryset.  You can go one step further than that by overriding the `get_queryset()` method and doing exactly what you want with the queryset.
 
 ----
+
+###Relationships
+
+Relationships are always a trick in APIs, so I've tried to make them as simple as possible.  Both to-one and to-many relationships are possible.  Example:
+
+```python
+class ProductResource(JSONMixin, CollectionResource):
+	model = Product
+
+	relationships = {
+		'vendor': {},			#to-one
+		'feature_set': {}		#to-many
+	}
+```
+
+If you need to exclude some fields from your related models, that can easily be done:
+
+```python
+relationships = {
+	'vendor': {
+		'exclude': ['private_notes']
+	},
+	'feature_set': {
+		'fields': ['id', 'name']
+	}
+}
+```
+
+Deeper relationships are denoted by a period:
+
+```python
+relationships = {
+	'vendor': {},
+	'vendor.parent_company': {}
+}
+```
+
+----
+
+###URIs
+
+By default, the resources will not insert any URIs into the responses.  For many, this is fine, but not all.  Sliver ships with a `URIMixin` that provides this functionality.  Example:
+
+```python
+class ProductCollectionResource(URIMixin, JSONMixin, CollectionResource):
+	#this should be the 'name' parameter you used in your URL patterns
+	model_resource_name = 'api-product-model'
+
+	#this is the name of the attribute you want serialized into your responses
+	uri_attribute_name = '_uri'
+```
+
+This is nice, but it won't insert URIs into related objects.  This will:
+
+```python
+relationships = {
+	'vendor': {
+		'model_resource_name': 'api-vendor-model'
+	}
+}
+```
