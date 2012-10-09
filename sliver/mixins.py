@@ -4,7 +4,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse
 
 
-class UriMixin(object):
+class URIMixin(object):
 	"""
 	Enable display of URIs in responses
 	"""
@@ -84,7 +84,7 @@ class UriMixin(object):
 
 
 
-class JsonSerializer(object):
+class JSONMixin(object):
 	""" Mixin for working with JSON encoded data """
 
 	def parse(self, data):
@@ -94,7 +94,7 @@ class JsonSerializer(object):
 		return json.dumps(context, indent=4)
 
 
-class FlatFileSerializer(object):
+class FlatFileMixin(object):
 	def parse(self, data):
 		input = StringIO(data)
 		reader = csv.DictReader(input, delimiter=self.get_delimiter())
@@ -118,11 +118,11 @@ class FlatFileSerializer(object):
 		return self.delimiter
 
 
-class TSVSerializer(FlatFileSerializer):
+class TSVMixin(FlatFileMixin):
 	""" Mixin with your resource to IO in TSV """
 	delimiter = '\t'
 
-class CsvSerializer(object):
+class CSVMixin(FlatFileMixin):
 	""" Mixin with your resource to IO in CSV """
 	delimiter = ','
 
