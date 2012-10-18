@@ -76,7 +76,10 @@ class Resource(View):
 
 		#this is a foreign key, we need to manually hydrate it
 		if isinstance(field, RelatedField):
-			val = field.rel.to(pk=val)
+			fk = {}
+			fk[field.rel.field_name] = val
+
+			val = field.rel.to(**fk)
 
 		return val
 
