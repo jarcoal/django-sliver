@@ -111,7 +111,7 @@ class Resource(View):
 		Prepares a relationship for the tubes.
 		"""
 
-		full_relationship_name = '.'.join([relationship_prefix, relationship_name]) if relationship_prefix else relationship_name
+		full_relationship_name = '__'.join([relationship_prefix, relationship_name]) if relationship_prefix else relationship_name
 
 		related_object = getattr(model, relationship_name)
 		relationship_data = self.relationships[full_relationship_name]
@@ -150,7 +150,7 @@ class Resource(View):
 			if field.name in exclude:
 				continue
 
-			full_relationship_name = '.'.join([relationship_prefix, field.name]) if relationship_prefix else field.name
+			full_relationship_name = '__'.join([relationship_prefix, field.name]) if relationship_prefix else field.name
 
 			#if this is a relationship they want expanded on
 			if isinstance(field, RelatedField) and full_relationship_name in self.relationships:
@@ -164,7 +164,7 @@ class Resource(View):
 		#loop through reverse relationships
 		for reverse_relationship in model._meta.get_all_related_objects():
 			relationship_name = reverse_relationship.get_accessor_name()
-			full_relationship_name = '.'.join([relationship_prefix, relationship_name]) if relationship_prefix else relationship_name
+			full_relationship_name = '__'.join([relationship_prefix, relationship_name]) if relationship_prefix else relationship_name
 
 			if full_relationship_name in self.relationships:
 				field_values[relationship_name] = self.dehydrate_relationship(model, relationship_name, relationship_prefix=relationship_prefix)

@@ -157,12 +157,12 @@ relationships = {
 }
 ```
 
-Deeper relationships are denoted by a period:
+Deeper relationships are denoted by double underscores:
 
 ```python
 relationships = {
 	'vendor': {},
-	'vendor.parent_company': {}
+	'vendor__parent_company': {}
 }
 ```
 
