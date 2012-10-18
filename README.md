@@ -53,8 +53,8 @@ from django.conf.urls import patterns, url
 from views import ProductCollectionResource, ProductResource
 
 urlpatterns = patterns('',
-	url(r'^products/$', LR(ProductCollectionResource.as_view()), name='api-products-collection'),
-	url(r'^products/(?P<pk>\d+)/$', LR(ProductResource.as_view()), name='api-products-model'),
+	url(r'^products/$', ProductCollectionResource.as_view(), name='api-products-collection'),
+	url(r'^products/(?P<pk>\d+)/$', ProductResource.as_view(), name='api-products-model'),
 )
 ```
 
