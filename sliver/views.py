@@ -123,7 +123,7 @@ class Resource(View):
 		}
 
 		#this is a to-many relationship
-		if related_object.__class__.__name__ == 'RelatedManager':
+		if related_object.__class__.__name__ in ('RelatedManager', 'ManyRelatedManager'):
 			return [self.dehydrate(related_model, **dehydrate_params) for related_model in related_object.all()]
 
 		#this is a to-one relationship
@@ -160,7 +160,6 @@ class Resource(View):
 			else:
 				field_values[field.name] = self.dehydrate_value(model, field)
 
-
 		#loop through reverse relationships
 		for reverse_relationship in model._meta.get_all_related_objects():
 			relationship_name = reverse_relationship.get_accessor_name()
@@ -168,6 +167,14 @@ class Resource(View):
 
 			if full_relationship_name in self.relationships:
 				field_values[relationship_name] = self.dehydrate_relationship(model, relationship_name, relationship_prefix=relationship_prefix)
+
+		#loop through m2m relationships
+		for m2m_relationship in model._meta.many_to_many:
+			relationship_name = m2m_relationship.name
+			full_relationship_name = '__'.join([relationship_prefix, relationship_name]) if relationship_prefix else relationship_name
+
+			if full_relationship_name in self.relationships:
+				field_values[relationship_name] = self.dehydrate_relationship(model, relationship_name, relationship_prefix=relationship_prefix)			
 
 		return field_values
 
