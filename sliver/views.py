@@ -240,9 +240,9 @@ class CollectionResource(MultipleObjectMixin, Resource):
 		"""
 
 		model_class = self.get_model_class()
-		instance = model_class.objects.create(**self.hydrate())
+		self.object = model_class.objects.create(**self.hydrate())
 
-		return self.render_to_response(self.dehydrate(instance), status=201)
+		return self.render_to_response(self.dehydrate(self.object), status=201)
 
 
 	def get(self, request, *args, **kwargs):
