@@ -99,9 +99,9 @@ class Resource(View):
 		elif isinstance(val, Decimal):
 			val = float(val)
 
-		#if it's something we don't know about, just cast to string
+		#if it's something we don't know about, just convert to string
 		elif not isinstance(val, (int, str, bool, NoneType)):
-			val = str(val)		
+			val = unicode(val)		
 
 		return val
 
