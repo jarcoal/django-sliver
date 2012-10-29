@@ -73,7 +73,7 @@ class URIMixin(object):
 		resource_name = self.get_model_resource_name(relationship)
 
 		if resource_name is None:
-			raise ImproperlyConfigured('UriMixin requires either a definition of "model_resource_name" or an implementation of "get_model_resource_name()" or "get_model_resource_url()"')
+			raise ImproperlyConfigured('URIMixin requires either a definition of "model_resource_name" or an implementation of "get_model_resource_name()" or "get_model_resource_url()"')
 
 		return reverse(resource_name, kwargs=self.get_resource_url_kwargs(model, relationship))
 
@@ -83,7 +83,7 @@ class URIMixin(object):
 		Remove the URI parameter from incoming requests.
 		"""
 
-		data = super(UriMixin, self).hydrate(*a, **k)
+		data = super(URIMixin, self).hydrate(*a, **k)
 
 		try:
 			del data[self.uri_attribute_name]
@@ -98,7 +98,7 @@ class URIMixin(object):
 		Insert the URI parameter into the data.
 		"""
 
-		data = super(UriMixin, self).dehydrate(model, fields, exclude, relationship_prefix)
+		data = super(URIMixin, self).dehydrate(model, fields, exclude, relationship_prefix)
 
 		try:
 			data[self.uri_attribute_name] = self.get_model_resource_url(model, relationship=relationship_prefix)
