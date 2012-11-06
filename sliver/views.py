@@ -75,7 +75,7 @@ class Resource(View):
 			raise responses.HttpResponseBadRequest
 
 		#this is a foreign key, we need to manually hydrate it
-		if isinstance(field, RelatedField):
+		if val and isinstance(field, RelatedField):
 			fk = {}
 			fk[field.rel.field_name] = val
 
