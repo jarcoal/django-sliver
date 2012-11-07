@@ -79,7 +79,7 @@ class Resource(View):
 			fk = {}
 			fk[field.rel.field_name] = val
 
-			val = field.rel.to(**fk)
+			val = field.rel.to.objects.get(**fk)
 
 		return val
 
