@@ -116,6 +116,8 @@ class URIMixin(object):
 class JSONMixin(object):
 	""" Mixin for working with JSON encoded data """
 
+	mimetype = 'application/json'
+
 	def parse(self, data):
 		return json.loads(data)
 
@@ -149,9 +151,13 @@ class FlatFileMixin(object):
 
 class TSVMixin(FlatFileMixin):
 	""" Mixin with your resource to IO in TSV """
+
 	delimiter = '\t'
+	mimetype = 'text/tab-separated-values'
+
 
 class CSVMixin(FlatFileMixin):
 	""" Mixin with your resource to IO in CSV """
-	delimiter = ','
 
+	delimiter = ','
+	mimetype = 'text/csv'
