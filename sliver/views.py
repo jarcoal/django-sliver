@@ -183,7 +183,15 @@ class Resource(View):
 		"""
 		Out to the tubes...
 		"""
-		return HttpResponse(self.render(context), status=status)
+		return HttpResponse(self.render(context), mimetype=self.get_mimetype(), status=status)
+
+	def get_mimetype(self):
+		"""
+		Determine the mimetype for the request
+		"""
+		if self.mimetype:
+			return self.mimetype
+		return 'text/html'
 
 
 
@@ -266,4 +274,3 @@ class CollectionResource(MultipleObjectMixin, Resource):
 		Loop through the models in the queryset and dehydrate them.
 		"""
 		return [self.dehydrate(model, self.fields, self.exclude) for model in self.object_list]
-
