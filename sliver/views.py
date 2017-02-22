@@ -161,7 +161,7 @@ class Resource(View):
 				field_values[field.name] = self.dehydrate_value(model, field)
 
 		#loop through reverse relationships
-		for reverse_relationship in model._meta.get_all_related_objects():
+		for reverse_relationship in model._meta.related_objects:
 			relationship_name = reverse_relationship.get_accessor_name()
 			full_relationship_name = '__'.join([relationship_prefix, relationship_name]) if relationship_prefix else relationship_name
 
