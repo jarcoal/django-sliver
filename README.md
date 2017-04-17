@@ -1,9 +1,9 @@
-#django-sliver
-###Lightweight REST API for Django built on top of generic views
+# django-sliver
+### Lightweight REST API for Django built on top of generic views
 
 ----
 
-###Why django-sliver?
+### Why django-sliver?
 
 Sliver was designed for sites that just need a simple API for their front-end ([backbone](https://github.com/documentcloud/backbone), etc), without all the bells and whistles (and headaches :) of a solution like [django-tastypie](https://github.com/toastdriven/django-tastypie).
 
@@ -16,13 +16,13 @@ Some things to note:
 
 ----
 
-###Requirements
+### Requirements
 
 There are no dependencies beyond having django >= 1.3
 
 ----
 
-###Installation
+### Installation
 
 ```pip install -e git+git@github.com:jarcoal/django-sliver.git#egg=django-sliver```
 
@@ -32,11 +32,11 @@ There are no dependencies beyond having django >= 1.3
 
 views.py
 ```python
-#sliver objects
+# sliver objects
 from sliver.views import ModelResource, CollectionResource
 from sliver.mixins import JSONMixin
 
-#your data
+# your data
 from products.models import Product
 
 
