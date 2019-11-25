@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="django-sliver",
-    version="0.1.0",
+    version="0.1.1",
     description="Lightweight REST API built on top of Django generic views",
     long_description="Lightweight REST API built on top of Django generic views",
     keywords="django, api, rest",
