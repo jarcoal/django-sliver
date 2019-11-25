@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/supervacuo/django-sliver.svg?branch=master)](https://travis-ci.org/supervacuo/django-sliver)
+
 # django-sliver
 ### Lightweight REST API for Django built on top of generic views
 
