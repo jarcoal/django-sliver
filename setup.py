@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name="django-sliver",
@@ -10,9 +10,10 @@ setup(
     author_email="jarcoal@gmail.com",
     url="https://github.com/jarcoal/django-sliver",
     license="BSD",
-    packages=["sliver"],
+    package_dir={'': 'src'},
+    packages=find_packages('src'),
     zip_safe=False,
-    install_requires=['django >= 1.3'],
+    install_requires=['django >= 1.11', 'six'],
     include_package_data=True,
     classifiers=[
         "Programming Language :: Python",
