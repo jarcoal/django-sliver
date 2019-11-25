@@ -1,7 +1,7 @@
 import json, csv
 from io import StringIO
 from django.core.exceptions import ImproperlyConfigured
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 
 class FiltersMixin(object):
@@ -108,9 +108,6 @@ class URIMixin(object):
 				raise
 
 		return data
-
-
-
 
 
 class JSONMixin(object):
