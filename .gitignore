@@ -1,2 +1,4 @@
 *.pyc
 .DS_Store
+/.tox
+/src/django_sliver.egg-info/

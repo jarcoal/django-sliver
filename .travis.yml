@@ -1,0 +1,9 @@
+language: python
+
+install: pip install tox-travis
+
+python:
+  - "2.7"
+  - "3.7"
+
+script: tox

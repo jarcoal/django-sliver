@@ -1,13 +1,12 @@
+# vim: fileencoding=utf-8 ai ts=4 sts=4 noet sw=4
+import datetime
+
 from django.views.generic import View
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.list import MultipleObjectMixin
 
-from django.db.models import ForeignKey, OneToOneField
 from django.db.models.fields.related import RelatedField
 
-import datetime
-
-from types import NoneType
 from decimal import Decimal
 
 from django.http import HttpResponse
@@ -15,7 +14,8 @@ from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
-import responses
+import sliver.responses as responses
+
 
 class Resource(View):
 	"""
@@ -35,7 +35,7 @@ class Resource(View):
 		#if a response exception is raised, grab it and return it to django
 		try:
 			return super(Resource, self).dispatch(request, *args, **kwargs)
-		except responses.SliverResponse, r:
+		except responses.SliverResponse as r:
 			return r.response()
 
 	def get_model_class(self):
@@ -100,8 +100,8 @@ class Resource(View):
 			val = float(val)
 
 		#if it's something we don't know about, just convert to string
-		elif not isinstance(val, (int, str, bool, NoneType)):
-			val = unicode(val)		
+		elif not isinstance(val, (int, str, bool, type(None))):
+			val = str(val)		
 
 		return val
 
@@ -144,7 +144,7 @@ class Resource(View):
 
 		#loop through the fields and scoop up the data
 		for field in model._meta.fields:
-			if fields and not field.name in fields:
+			if fields and field.name not in fields:
 				continue
 
 			if field.name in exclude:
@@ -161,7 +161,7 @@ class Resource(View):
 				field_values[field.name] = self.dehydrate_value(model, field)
 
 		#loop through reverse relationships
-		for reverse_relationship in model._meta.get_all_related_objects():
+		for reverse_relationship in model._meta.related_objects:
 			relationship_name = reverse_relationship.get_accessor_name()
 			full_relationship_name = '__'.join([relationship_prefix, relationship_name]) if relationship_prefix else relationship_name
 
@@ -183,17 +183,15 @@ class Resource(View):
 		"""
 		Out to the tubes...
 		"""
-		return HttpResponse(self.render(context), mimetype=self.get_mimetype(), status=status)
+		return HttpResponse(self.render(context), content_type=self.get_content_type(), status=status)
 
-	def get_mimetype(self):
+	def get_content_type(self):
 		"""
-		Determine the mimetype for the request
+		Determine the content_type for the request
 		"""
-		if self.mimetype:
-			return self.mimetype
+		if getattr(self, 'content_type', False):
+			return self.content_type
 		return 'text/html'
-
-
 
 
 class ModelResource(SingleObjectMixin, Resource):
@@ -240,8 +238,6 @@ class ModelResource(SingleObjectMixin, Resource):
 		Prepares data for response
 		"""
 		return self.dehydrate(self.object, self.fields, self.exclude)
-
-
 
 
 class CollectionResource(MultipleObjectMixin, Resource):
