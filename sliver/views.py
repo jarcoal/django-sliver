@@ -7,7 +7,6 @@ from django.db.models.fields.related import RelatedField
 
 import datetime
 
-from types import NoneType
 from decimal import Decimal
 
 from django.http import HttpResponse
@@ -15,7 +14,7 @@ from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
-import responses
+import sliver.responses as responses
 
 class Resource(View):
 	"""
@@ -35,7 +34,7 @@ class Resource(View):
 		#if a response exception is raised, grab it and return it to django
 		try:
 			return super(Resource, self).dispatch(request, *args, **kwargs)
-		except responses.SliverResponse, r:
+		except responses.SliverResponse as r:
 			return r.response()
 
 	def get_model_class(self):
@@ -100,7 +99,7 @@ class Resource(View):
 			val = float(val)
 
 		#if it's something we don't know about, just convert to string
-		elif not isinstance(val, (int, str, bool, NoneType)):
+		elif not isinstance(val, (int, str, bool, type(None))):
 			val = unicode(val)		
 
 		return val

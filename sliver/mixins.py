@@ -1,5 +1,5 @@
 import json, csv
-from StringIO import StringIO
+from io import StringIO
 from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse
 
