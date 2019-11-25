@@ -20,17 +20,17 @@ Some things to note:
 
 ### Requirements
 
-There are no dependencies beyond having django >= 1.3
+There are no dependencies beyond having Django >= 1.11
 
 ----
 
 ### Installation
 
-```pip install -e git+git@github.com:jarcoal/django-sliver.git#egg=django-sliver```
+`pip install -e git+git@github.com:supervacuo/django-sliver.git#egg=django-sliver`
 
 ----
 
-###What's it look like?
+### What's it look like?
 
 views.py
 ```python
@@ -49,7 +49,7 @@ class ProductResource(JSONMixin, ModelResource):
 	model = Product
 ```
 
-urls.py
+`urls.py`:
 ```python
 from django.conf.urls import patterns, url
 from views import ProductCollectionResource, ProductResource
@@ -64,21 +64,21 @@ That's all you need for a basic JSON API.
 
 ----
 
-###Views
+### `Views`
 
 There are two main views that will be important to you.  Remember, they both inherit from Django's [View](https://github.com/django/django/blob/master/django/views/generic/base.py) class, so you can override `dispatch()`, `get()`, `post()`, etc, whenever you want.
 
-####sliver.views.ModelResource
+#### `sliver.views.ModelResource`
 
 ModelResource is designed to handle requests relating to a single model object.  It's mixed with Django's [SingleObjectMixin](https://github.com/django/django/blob/master/django/views/generic/detail.py), so methods like `get_object()` and `get_queryset()` can easily be overrided.
 
-####sliver.views.CollectionResource
+#### `sliver.views.CollectionResource`
 
 CollectionResource is designed to handle requests relating to a collection of model objects.  Similar to ModelResource, it mixes with Django's [MultipleObjectMixin](https://github.com/django/django/blob/master/django/views/generic/list.py), so those methods are available.
 
 ----
 
-###Limiting incoming/outgoing fields
+### Limiting incoming/outgoing fields
 
 Handling which fields are shown / updateable is just like using Django's form views.  Continuing our example:
 
@@ -93,7 +93,7 @@ class ProductCollectionResource(JSONMixin, CollectionResource):
 
 ----
 
-###Serializing / Unserializing
+### Serializing / Deserializing
 
 Serializing is really up to you; the bare resources don't implement anything in particular. There is a JSONMixin provided that you can add to your resource that will aide in parsing/rendering your resource in JSON.
 
@@ -115,7 +115,7 @@ def render(self, data):
 
 ----
 
-###Filtering
+### Filtering
 
 Filtering can easily be applied by overriding `get_queryset()` and applying your own logic.  However, if you need a simple solution, you can add the `FiltersMixin` to your resource (usually on collection).  Continuing our basic example from above:
 
@@ -132,7 +132,7 @@ If you need more advanced filtering, you can override `get_filters()` which shou
 
 ----
 
-###Relationships
+### Relationships
 
 Relationships are always a trick in APIs, so I've tried to make them as simple as possible.  Both to-one and to-many relationships are possible.  Example:
 
@@ -170,7 +170,7 @@ relationships = {
 
 ----
 
-###URIs
+### URIs
 
 By default, the resources will not insert any URIs into the responses.  For many, this is fine, but not all.  Sliver ships with a `URIMixin` that provides this functionality.  Example:
 
