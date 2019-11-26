@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/supervacuo/django-sliver.svg?branch=master)](https://travis-ci.org/supervacuo/django-sliver)
+[![Build Status](https://travis-ci.org/jarcoal/django-sliver.svg?branch=master)](https://travis-ci.org/jarcoal/django-sliver)
 
 # django-sliver
 ### Lightweight REST API for Django built on top of generic views
@@ -26,7 +26,7 @@ There are no dependencies beyond having Django >= 1.11
 
 ### Installation
 
-`pip install -e git+git@github.com:supervacuo/django-sliver.git#egg=django-sliver`
+`pip install -e git+git@github.com:jarcoal/django-sliver.git#egg=django-sliver`
 
 ----
 
